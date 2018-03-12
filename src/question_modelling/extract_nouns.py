@@ -2,7 +2,7 @@
 # @Author: vamshi
 # @Date:   2018-03-04 20:01:08
 # @Last Modified by:   vamshi
-# @Last Modified time: 2018-03-05 12:30:27
+# @Last Modified time: 2018-03-11 22:21:05
 
 #code to extract nouns from a sentence
 
@@ -29,27 +29,30 @@ questions= ['What is a good gift for a girl?',
 			'How to do job hunting?',
 			'Idea for this valentine’s day?']
 
-lines = 'lines is some string of words'
-# lambda function to test if something is a noun
-is_noun = lambda pos: pos[:2] == 'NN'
+def extract_nouns(questions):
+	'''
+		input : list of questions
+		output : returns lsit of keypwords for every question
+	'''
+	# lambda function to test if something is a noun
+	is_noun = lambda pos: pos[:2] == 'NN'
 
-# tokenize
-stop_words = set(stopwords.words('english'))
-keywords = []
-for line in questions:
-	#rm apostrophe
-	line = line.replace("‘", '').replace("’", '').replace("'", '')
-	tokenized = nltk.word_tokenize(line)
-	
-	#table = string.maketrans('!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~', '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~')
-	#stripped = [w.translate(table) for w in tokenized]
-	nouns = [word for (word, pos) in nltk.pos_tag(tokenized) if is_noun(pos)] 
-	nouns = [word.lower() for word in nouns]
-	nouns = [w for w in nouns if not w in stop_words]
-	keywords.append(nouns)
-	#print nouns
-
-print keywords
+	# tokenize
+	stop_words = set(stopwords.words('english'))
+	keywords = []
+	for line in questions:
+		#rm apostrophe
+		line = line.replace("‘", '').replace("’", '').replace("'", '')
+		tokenized = nltk.word_tokenize(line)
+		
+		#table = string.maketrans('!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~', '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~')
+		#stripped = [w.translate(table) for w in tokenized]
+		nouns = [word for (word, pos) in nltk.pos_tag(tokenized) if is_noun(pos)] 
+		nouns = [word.lower() for word in nouns]
+		nouns = [w for w in nouns if not w in stop_words]
+		keywords.append(nouns)
+	return keywords
+'''
 
 all_ques_word_counts = []
 all_ques_total_counts = []
@@ -71,11 +74,11 @@ for ques_keywds in keywords:
 				#content = content.decode("utf-8",'ignore')
 				#content = content.replace("‘", '').replace("’", '').replace("'", '')
 				tokenized_page = nltk.word_tokenize(content)
-				#update cpunts
+				#update counts
 				word_count = tokenized_page.count(keywd)
 				total_count += len(tokenized_page)
 			except wiki.exceptions.DisambiguationError as e:
-				'''
+	
 				options = e.options
 				for opt in options:
 					page = wiki.page(opt)
@@ -85,7 +88,7 @@ for ques_keywds in keywords:
 					#update cpunts
 					word_count = tokenized_page.count(keywd)
 					total_count += len(tokenized_page)
-					'''
+					
 		word_counts.append(word_count)
 		total_counts.append(total_count)
 	all_ques_word_counts.append(word_counts)
@@ -93,7 +96,4 @@ for ques_keywds in keywords:
 
 
 print(all_ques_word_counts)
-
-
-			#print page.content
-
+'''
