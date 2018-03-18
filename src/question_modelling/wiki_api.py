@@ -2,7 +2,7 @@
 # @Author: vamshi
 # @Date:   2018-03-04 20:33:21
 # @Last Modified by:   vamshi
-# @Last Modified time: 2018-03-12 00:09:05
+# @Last Modified time: 2018-03-16 15:36:05
 
 import os
 import sys
@@ -32,8 +32,9 @@ ques_nouns = extract_nouns(questions)
 vocabulary = np.load(VOCAB_FILE)
 vocabulary = vocabulary['vocabulary']
 counts = np.zeros(shape=(len(vocabulary)))
-vocab_dict = zip(vocabulary,counts)
+#vocab_dict = zip(vocabulary,counts)
 
+question_indexes = []
 
 all_ques_word_counts = []
 all_ques_total_counts = []
@@ -42,12 +43,13 @@ for (ques_no,ques_keywds) in enumerate(ques_nouns):
 	word_counts = []
 	total_counts = []
 	print("keywords of question %d are %s"%(ques_no+1,ques_keywds))
+	vocab_dict = zip(vocabulary,counts)
 	for keywd in ques_keywds:
 		word_count = 0
 		total_count = 0
 		print ("Searching for : ", keywd)
 
-		search_results =  wiki.search(keywd,results=2)
+		search_results =  wiki.search(keywd,results=1)
 		print("search results are: ", search_results)
 		for wrd in search_results:
 			try:
@@ -58,7 +60,7 @@ for (ques_no,ques_keywds) in enumerate(ques_nouns):
 				tokenized_page = nltk.word_tokenize(content)
 				try:
 					for wrd in tokenized_page:
-						vocabulary[wrd] += 1
+						vocab_dict[wrd] += 1
 				except:
 					print(wrd, "word not found in vocabulary")
 
@@ -77,10 +79,14 @@ for (ques_no,ques_keywds) in enumerate(ques_nouns):
 					word_count = tokenized_page.count(keywd)
 					total_count += len(tokenized_page)
 					'''
+
 		word_counts.append(word_count)
 		total_counts.append(total_count)
+
+	#storing a vocab dict of a particulat question	
+	question_indexes.append(vocab_dict)
 	all_ques_word_counts.append(word_counts)
 	all_ques_total_counts.append(total_counts)
 
 
-print(all_ques_word_counts)
+print(question_indexes)
