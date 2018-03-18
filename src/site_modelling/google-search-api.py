@@ -30,9 +30,9 @@ print("Number of sites: ", len(sites))
 
 
 #search for quora 
-#quora_results = google.search("site:quora.com")
+quora_results = google.search("site:quora.com")
 
-'''
+
 #quora
 quora_re = 'www\.quora\.com\.au' 
 quora_regexp = re.compile(r'www.quora.com')
@@ -45,7 +45,7 @@ for res in quora_results:
 	if quora_regexp.search(link):
 		print("matched")
 		quora_links.append(link)
-'''
+
 
 def get_top_nlinks(website,n):
 	'''function to get top n links of a website returned by google'''
@@ -57,15 +57,15 @@ def get_top_nlinks(website,n):
 	print(links)
 	return links
 
-'''
+
 sites_links = []
 for site in sites:
-	site_links = get_top_nlinks(site, n=10)
+	site_links = get_top_nlinks(site, n=3)
 	sites_links.append(site_links)
 
 
 print(sites_links)
-'''
+
 
 
 
