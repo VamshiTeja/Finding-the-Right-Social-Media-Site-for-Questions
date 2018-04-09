@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: vamshi
 # @Date:   2018-03-04 20:01:08
-# @Last Modified by:   vamshi
-# @Last Modified time: 2018-03-14 11:45:12
+# @Last Modified by:   rajeshneti
+# @Last Modified time: 2018-04-08 14:37:21
 
 #code to extract nouns from a sentence
 
@@ -32,7 +32,7 @@ questions= ['What is a good gift for a girl?',
 def extract_nouns(questions):
 	'''
 		input : list of questions
-		output : returns lsit of keypwords for every question
+		output : returns list of keypwords for every question
 	'''
 	# lambda function to test if something is a noun
 	is_noun = lambda pos: pos[:2] == 'NN'

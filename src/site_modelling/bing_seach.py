@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+# @Author: rajeshneti
+# @Date:   2018-04-02 11:39:18
+# @Last Modified by:   rajeshneti
+# @Last Modified time: 2018-04-03 08:25:00
 subscription_key = "96d05359d76f4e758906539daeab939e"
 assert subscription_key
 search_url = "https://api.cognitive.microsoft.com/bing/v7.0/search"

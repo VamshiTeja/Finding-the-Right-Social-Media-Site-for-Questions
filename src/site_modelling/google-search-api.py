@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: vamshi
 # @Date:   2018-03-14 11:46:41
-# @Last Modified by:   vamshi
-# @Last Modified time: 2018-03-16 10:27:06
+# @Last Modified by:   rajeshneti
+# @Last Modified time: 2018-04-02 22:01:15
 #modelling sites
 import os
 import sys
@@ -13,6 +13,7 @@ import pandas
 import numpy as np
 import wikipedia as wiki
 from google import google
+#import google
 import re
 import urllib2
 
@@ -53,7 +54,7 @@ def get_top_nlinks(website,n):
 	search_results = google.search("site:www."+website,n)
 	links = []
 	for res in search_results:
-		links.append(res.link)
+		links.append(resb.link)
 	print(links)
 	return links
 
@@ -64,7 +65,7 @@ for site in sites:
 	sites_links.append(site_links)
 
 
-print(sites_links)
+print(len(sites_links))
 
 
 
