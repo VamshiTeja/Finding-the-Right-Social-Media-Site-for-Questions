@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 # @Author: rajeshneti
 # @Date:   2018-04-08 16:07:36
-# @Last Modified by:   rajeshneti
-# @Last Modified time: 2018-04-08 17:18:57
+# @Last Modified by:   vamshi
+# @Last Modified time: 2018-04-10 08:45:20
 sites=["answers.com","ask.com","blogger.com", "facebook.com", "flickr.com" ,"girlsaskguys.com" ,"imgur.com","instagram.com","last.fm",
 		"libre.fm","linkedin.com","match.com","pinterest.com","quora.com","raptr.com","reddit.com","stackoverflow.com" ,"tripadvisor.com","tumblr.com",
 		"twitter.com","viadeo.com","wikipedia.org","wordpress.org","xing.com","yelp.com","youtube.com"]
+
 s1=["http://www.answers.com/","https://www.answers.com/Q/FAQ/5091","http://www.answers.com/Q/FAQ/2885","https://www.answers.com/Q/FAQ/7493","https://www.answers.com/Q/FAQ/4148-2","http://wiki.answers.com/help/asking_questions","http://www.answers.com/Q/FAQ/1839","https://www.answers.com/Q/FAQ/7505-2","https://www.answers.com/Q/FAQ/10447-3","http://www.answers.com/Q/FAQ/2148"]
 s2=["http://help.ask.com/link/portal/30015/30018/ArticleFolder/11/Ask-com-Browser-Toolbar","http://help.ask.com/ics/support/default.asp?deptID=30018&task=knowledge&questionID=230","https://hp.tb.ask.com/tbask/index.html?p2=^UX^xdm578^S10474^us&n=780c7317&ptb=22D0EFEF-1AF4-4911-BE20-67F032677E7D&qs=fn","https://help.ask.com/link/portal/30015/30018/ArticleFolder/10/Ask-com-Search","http://help.ask.com/link/portal/30015/30018/Article/1/How-do-I-remove-the-Ask-com-Toolbar","http://help.ask.com/ics/support/default.asp?deptID=30018","http://help.ask.com/link/portal/30015/30018/Article/134","https://www.ask.com/","http://apn.ask.com/","http://hp.ask.com/onlinemapfinder/s16311/index.html?p2=%5EBA5%5Exdm133%5ES16351%5Eus&ptb=DD4D7D76-555A-4CB8-A6AA-A6DD9B840CC7&si=245051_Work-ieff&n=782A33E4"]
 s3=["https://www.blogger.com/home","https://blogger.com/editor/static_files/blank_quirks.html","https://www.blogger.com/login.g","https://www.blogger.com/profile/12522565235980454675","https://www.blogger.com/?rinli=1","https://www.blogger.com/profile/04486298891295312827","https://www.blogger.com/profile/10316114807344544892","https://www.blogger.com/profile/16820399856274245684","https://www.blogger.com/profile/14340145740286368529","https://www.blogger.com/content.g?hl=en&authuser=0&bpli=1"]
@@ -32,3 +33,5 @@ s23=["https://wordpress.org/","https://codex.wordpress.org/Child_Themes","https:
 s24=["https://www.xing.com/en","https://dev.xing.com/developers","https://www.xing.com/xtm","https://recruiting.xing.com/en/contact/","https://www.xing.com/jobmanager/products","https://recruiting.xing.com/en/","https://tech.xing.com/","https://dev.xing.com/plugins/login_with","https://dev.xing.com/logo_rules","https://corporate.xing.com/fileadmin/department/investorrelations/Publikationen/XING_AG_results_FY_2012.pdf"]
 s25=["https://yelp.com/biz/eastern-bloc-new-york","https://yelp.com/biz/mokai-lounge-miami-beach","https://www.yelp.com/biz/access-insurance-company-atlanta-2","https://yelp.com/biz/torchys-tacos-austin","https://yelp.com/biz/oriental-buffet-sarasota","https://yelp.com/biz/tasty-made-lancaster","https://yelp.com/biz/carvalhos-brazilian-kitchen-scottsdale","https://yelp.com/biz/deluxe-station-diner-newton","https://www.yelp.com/biz/luscious-dumplings-san-gabriel-3","https://yelp.com/biz/now-and-then-second-hand-store-orange"]
 s26=["https://gaming.youtube.com/","https://www.youtube.com/advanced_settings","https://www.youtube.com/watch?v=9Bxik6kLEbM","https://gaming.youtube.com/ice_poseidon/live","https://www.youtube.com/watch?v=38aIMNJKS-g","https://gaming.youtube.com/Swaggxbl","https://youtube.com/watch?v=qt4v-kXP8F4","https://youtube.com/watch?v=_I_D_8Z4sJE","https://www.youtube.com/watch?v=Ya_4C3jSsn0","https://youtube.com/watch?v=P6CwU6i6ick"]
+
+bing_links = [s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13,s14,s15,s16,s17,s18,s19,s20,s21,s22,s23,s24,s24,s25,s26]

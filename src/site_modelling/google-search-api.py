@@ -2,8 +2,8 @@
 # @Author: vamshi
 # @Date:   2018-03-14 11:46:41
 <<<<<<< 86daa0a0e0fbe26402665ca13c8fe141bfb9eb09
-# @Last Modified by:   rajeshneti
-# @Last Modified time: 2018-04-02 22:01:15
+# @Last Modified by:   vamshi
+# @Last Modified time: 2018-04-10 01:30:06
 =======
 # @Last Modified by:   vamshi
 # @Last Modified time: 2018-04-09 22:33:25
@@ -69,14 +69,7 @@ for site in sites:
 
 np.save("./google_links",sites_links)
 
-<<<<<<< 86daa0a0e0fbe26402665ca13c8fe141bfb9eb09
+
 print(len(sites_links))
-
-
-
-
-
-
-=======
 print(sites_links)
->>>>>>> add google scapred links
+

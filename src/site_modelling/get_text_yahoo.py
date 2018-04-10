@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: vamshi
-# @Date:   2018-04-09 21:53:34
+# @Date:   2018-04-10 08:40:39
 # @Last Modified by:   vamshi
-# @Last Modified time: 2018-04-10 08:46:51
-
+# @Last Modified time: 2018-04-10 09:34:25
 import urllib
 from bs4 import BeautifulSoup
 import os,sys
@@ -12,6 +11,8 @@ import nltk
 from nltk import word_tokenize
 from nltk.stem.wordnet import WordNetLemmatizer 
 from nltk.stem.porter import PorterStemmer
+
+from yahoo_links import yahoo_links
 
 import re
 import string
@@ -23,10 +24,10 @@ sites = ["answers.com","ask.com","blogger.com", "facebook.com", "flickr.com" ,"g
 		"libre.fm","linkedin.com","match.com","pinterest.com","quora.com","raptr.com","reddit.com","stackoverflow.com" ,"tripadvisor.com","tumblr.com",
 		"twitter.com","viadeo.com","wikipedia.org","wordpress.org","xing.com","yelp.com","youtube.com"]
 
-url = "https://www.yahoo.com"
+
 
 #get google links for n=3
-google_links_n3 = np.load("links.npy")
+
 #print(google_links_n3)
 
 #load vocabulary
@@ -84,7 +85,7 @@ def get_words(text):
 #store dicts of all sites
 dicts = []
 
-for (site_no,site_links) in enumerate(google_links_n3):
+for (site_no,site_links) in enumerate(yahoo_links):
 	print("processing site : " ,sites[site_no])
 	site_words = []
 	vocab_site_dict = zip(vocabulary,counts)
@@ -103,4 +104,4 @@ for (site_no,site_links) in enumerate(google_links_n3):
 		site_words.append(words)
 		dicts.append(vocab_site_dict)
 
-np.save("./site_google_dicts",dicts)
+np.save("./site_bing_dicts",dicts)
