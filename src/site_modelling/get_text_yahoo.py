@@ -2,7 +2,7 @@
 # @Author: vamshi
 # @Date:   2018-04-10 08:40:39
 # @Last Modified by:   vamshi
-# @Last Modified time: 2018-04-10 09:34:25
+# @Last Modified time: 2018-04-10 13:27:47
 import urllib
 from bs4 import BeautifulSoup
 import os,sys
@@ -86,7 +86,7 @@ def get_words(text):
 dicts = []
 
 for (site_no,site_links) in enumerate(yahoo_links):
-	print("processing site : " ,sites[site_no])
+	print("processing site : %s" %sites[site_no])
 	site_words = []
 	vocab_site_dict = zip(vocabulary,counts)
 	for link in site_links[0:5]:
@@ -99,9 +99,11 @@ for (site_no,site_links) in enumerate(yahoo_links):
 			for wrd in words:
 				vocab_site_dict[wrd] += 1
 		except:
-			print(wrd, "word not found in vocabulary")
+			print("%s : not found in vocabulary"%wrd)
 
+		np.save("../../data/yahoo_text/"+os.path.splitext(sites[site_no])[0], vocab_site_dict)
 		site_words.append(words)
 		dicts.append(vocab_site_dict)
+	print("\n")	
 
 np.save("./site_bing_dicts",dicts)

@@ -2,7 +2,7 @@
 # @Author: vamshi
 # @Date:   2018-04-10 08:40:39
 # @Last Modified by:   vamshi
-# @Last Modified time: 2018-04-10 08:46:41
+# @Last Modified time: 2018-04-10 13:27:23
 import urllib
 from bs4 import BeautifulSoup
 import os,sys
@@ -101,7 +101,9 @@ for (site_no,site_links) in enumerate(bing_links):
 		except:
 			print(wrd, "word not found in vocabulary")
 
+		np.save("../../data/bing_text/"+os.path.splitext(sites[site_no])[0], vocab_site_dict)
 		site_words.append(words)
 		dicts.append(vocab_site_dict)
+	print("\n")
 
 np.save("./site_bing_dicts",dicts)

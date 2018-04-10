@@ -2,7 +2,7 @@
 # @Author: vamshi
 # @Date:   2018-04-09 21:53:34
 # @Last Modified by:   vamshi
-# @Last Modified time: 2018-04-10 08:46:51
+# @Last Modified time: 2018-04-10 13:29:58
 
 import urllib
 from bs4 import BeautifulSoup
@@ -26,7 +26,7 @@ sites = ["answers.com","ask.com","blogger.com", "facebook.com", "flickr.com" ,"g
 url = "https://www.yahoo.com"
 
 #get google links for n=3
-google_links_n3 = np.load("links.npy")
+google_links_n3 = np.load("../../data/links.npy")
 #print(google_links_n3)
 
 #load vocabulary
@@ -85,7 +85,7 @@ def get_words(text):
 dicts = []
 
 for (site_no,site_links) in enumerate(google_links_n3):
-	print("processing site : " ,sites[site_no])
+	print("processing site : %s "%sites[site_no])
 	site_words = []
 	vocab_site_dict = zip(vocabulary,counts)
 	for link in site_links[0:5]:
@@ -98,9 +98,11 @@ for (site_no,site_links) in enumerate(google_links_n3):
 			for wrd in words:
 				vocab_site_dict[wrd] += 1
 		except:
-			print(wrd, "word not found in vocabulary")
+			print("%s : not found in vocabulary"%wrd)
 
+		np.save("../../data/google_text/"+os.path.splitext(sites[site_no])[0], vocab_site_dict)
 		site_words.append(words)
 		dicts.append(vocab_site_dict)
+	print("\n")
 
 np.save("./site_google_dicts",dicts)
