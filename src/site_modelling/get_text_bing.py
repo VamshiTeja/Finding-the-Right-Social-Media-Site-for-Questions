@@ -2,8 +2,8 @@
 # @Author: vamshi
 # @Date:   2018-04-10 08:40:39
 # @Last Modified by:   vamshi
-# @Last Modified time: 2018-04-10 13:27:23
-import urllib
+# @Last Modified time: 2018-04-10 13:56:45
+import urllib2
 from bs4 import BeautifulSoup
 import os,sys
 import numpy as np
@@ -16,6 +16,11 @@ from bing_links import bing_links
 
 import re
 import string
+import ssl
+
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
 
 #vocabulary based on glove-wikipedia
 VOCAB_FILE = "../../data/vocab.npz"
@@ -38,25 +43,33 @@ counts = np.zeros(shape=(len(vocabulary)))
 
 def get_text(url):
 	
-	'''Function to get text out of a web page'''
-	html = urllib.urlopen(url).read()
-	soup = BeautifulSoup(html)
+	try:
+		'''Function to get text out of a web page'''
+		html = urllib2.urlopen(url).read()
+		soup = BeautifulSoup(html)
 
-	# kill all script and style elements
-	for script in soup(["script", "style"]):
-	    script.extract()    # rip it out
+		# kill all script and style elements
+		for script in soup(["script", "style"]):
+		    script.extract()    # rip it out
 
-	# get text
-	text = soup.get_text()
+		# get text
+		text = soup.get_text()
 
-	# break into lines and remove leading and trailing space on each
-	lines = (line.strip() for line in text.splitlines())
-	# break multi-headlines into a line each
-	chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
-	# drop blank lines
-	text = '\n'.join(chunk for chunk in chunks if chunk)
-	text.encode('utf-8')
-	return text
+		# break into lines and remove leading and trailing space on each
+		lines = (line.strip() for line in text.splitlines())
+		# break multi-headlines into a line each
+		chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+		# drop blank lines
+		text = '\n'.join(chunk for chunk in chunks if chunk)
+		text.encode('utf-8')
+		return text
+
+	except urllib2.HTTPError, e:
+		print ('We failed with error code - %s.' % e.code)
+		return None
+
+
+
 
 def get_words(text):
 	
@@ -92,18 +105,19 @@ for (site_no,site_links) in enumerate(bing_links):
 	for link in site_links[0:5]:
 		print("------> processing link: %s"%link)
 		text = get_text(link)
-		words = get_words(text)
+		if(text is not None):
+			words = get_words(text)
 
-		#increment counts of words in vocabulary based on words in sites
-		try:
-			for wrd in words:
-				vocab_site_dict[wrd] += 1
-		except:
-			print(wrd, "word not found in vocabulary")
+			#increment counts of words in vocabulary based on words in sites
+			try:
+				for wrd in words:
+					vocab_site_dict[wrd] += 1
+			except:
+				print(wrd, "word not found in vocabulary")
 
 		np.save("../../data/bing_text/"+os.path.splitext(sites[site_no])[0], vocab_site_dict)
 		site_words.append(words)
 		dicts.append(vocab_site_dict)
 	print("\n")
 
-np.save("./site_bing_dicts",dicts)
+#np.save("./site_bing_dicts",dicts)

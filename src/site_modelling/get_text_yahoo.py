@@ -2,7 +2,7 @@
 # @Author: vamshi
 # @Date:   2018-04-10 08:40:39
 # @Last Modified by:   vamshi
-# @Last Modified time: 2018-04-10 13:27:47
+# @Last Modified time: 2018-04-10 13:39:29
 import urllib
 from bs4 import BeautifulSoup
 import os,sys
@@ -106,4 +106,4 @@ for (site_no,site_links) in enumerate(yahoo_links):
 		dicts.append(vocab_site_dict)
 	print("\n")	
 
-np.save("./site_bing_dicts",dicts)
+#np.save("./site_bing_dicts",dicts)

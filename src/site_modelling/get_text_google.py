@@ -2,9 +2,9 @@
 # @Author: vamshi
 # @Date:   2018-04-09 21:53:34
 # @Last Modified by:   vamshi
-# @Last Modified time: 2018-04-10 13:29:58
+# @Last Modified time: 2018-04-10 22:06:03
 
-import urllib
+import urllib2
 from bs4 import BeautifulSoup
 import os,sys
 import numpy as np
@@ -12,9 +12,13 @@ import nltk
 from nltk import word_tokenize
 from nltk.stem.wordnet import WordNetLemmatizer 
 from nltk.stem.porter import PorterStemmer
+import pickle
 
 import re
 import string
+
+from bing_links import bing_links
+from yahoo_links import yahoo_links
 
 #vocabulary based on glove-wikipedia
 VOCAB_FILE = "../../data/vocab.npz"
@@ -37,25 +41,30 @@ counts = np.zeros(shape=(len(vocabulary)))
 
 def get_text(url):
 	
-	'''Function to get text out of a web page'''
-	html = urllib.urlopen(url).read()
-	soup = BeautifulSoup(html)
+	try:
+		'''Function to get text out of a web page'''
+		html = urllib2.urlopen(url).read()
+		soup = BeautifulSoup(html)
 
-	# kill all script and style elements
-	for script in soup(["script", "style"]):
-	    script.extract()    # rip it out
+		# kill all script and style elements
+		for script in soup(["script", "style"]):
+		    script.extract()    # rip it out
 
-	# get text
-	text = soup.get_text()
+		# get text
+		text = soup.get_text()
 
-	# break into lines and remove leading and trailing space on each
-	lines = (line.strip() for line in text.splitlines())
-	# break multi-headlines into a line each
-	chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
-	# drop blank lines
-	text = '\n'.join(chunk for chunk in chunks if chunk)
-	text.encode('utf-8')
-	return text
+		# break into lines and remove leading and trailing space on each
+		lines = (line.strip() for line in text.splitlines())
+		# break multi-headlines into a line each
+		chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+		# drop blank lines
+		text = '\n'.join(chunk for chunk in chunks if chunk)
+		text.encode('utf-8')
+		return text
+
+	except urllib2.HTTPError, e:
+		print ('We failed with error code - %s.' % e.code)
+		return None
 
 def get_words(text):
 	
@@ -84,25 +93,39 @@ def get_words(text):
 #store dicts of all sites
 dicts = []
 
-for (site_no,site_links) in enumerate(google_links_n3):
-	print("processing site : %s "%sites[site_no])
-	site_words = []
-	vocab_site_dict = zip(vocabulary,counts)
-	for link in site_links[0:5]:
-		print("------> processing link: %s"%link)
-		text = get_text(link)
-		words = get_words(text)
+def get_vectors_for_sites(links,search_engine="google"):
+	'''
+	links: links of the search engine
+	searrch_engine: "google" or "yahoo" or "bing"
+	'''
+	for (site_no,site_links) in enumerate(links):
+		print("processing site : %s "%sites[site_no])
+		site_words = []
+		vocab_site_dict = dict(zip(vocabulary,counts))
+		for link in site_links[0:5]:
+			print("------> processing link: %s"%link)
+			text = get_text(link)
 
-		#increment counts of words in vocabulary based on words in sites
-		try:
-			for wrd in words:
-				vocab_site_dict[wrd] += 1
-		except:
-			print("%s : not found in vocabulary"%wrd)
+			if(text is not None):
+				words = get_words(text)
 
-		np.save("../../data/google_text/"+os.path.splitext(sites[site_no])[0], vocab_site_dict)
-		site_words.append(words)
-		dicts.append(vocab_site_dict)
-	print("\n")
+				#increment counts of words in vocabulary based on words in sites
+				try:
+					for wrd in words:
+						vocab_site_dict[wrd] += 1
+				except:
+					print(wrd, "word not found in vocabulary")
+					vocab_site_dict['unknown'] +=1
 
-np.save("./site_google_dicts",dicts)
+			with open("../../data/"+search_engine+"_text/"+os.path.splitext(sites[site_no])[0]+".pickle","wb") as f:
+				pickle.dump(vocab_site_dict, f)
+				f.close()
+
+			#np.save("../../data/google_text/"+os.path.splitext(sites[site_no])[0], vocab_site_dict)
+			#site_words.append(words)
+			#dicts.append(vocab_site_dict)
+		print("\n")
+
+get_vectors_for_sites(google_links_n3,"google")
+get_vectors_for_sites(bing_links,"bing")
+get_vectors_for_sites(yahoo_links,"yahoo")
