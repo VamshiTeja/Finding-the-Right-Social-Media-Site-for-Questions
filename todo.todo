@@ -1,0 +1,21 @@
+ ✔ question modelling @done (18-03-12 22:43)
+ ☐ site modelling(4 search engines, 20 sites) 
+   ☐ search engines
+     ☐ google api
+       ✔ get top n links @done (18-03-16 13:11)
+       ☐ need to clean sites with beautiful soup or scrapy
+     ☐ bing api
+     ☐ yahoo api
+   ☐ sites
+     ☐ facebook
+     ☐ twitter
+     ☐ quora
+     ....(20 sites)
+
+ ☐ ranking
+
+
+
+
+ PS: Add anything you feel necessary
+ 
