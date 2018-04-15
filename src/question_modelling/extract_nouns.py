@@ -1,13 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Author: vamshi
 # @Date:   2018-03-04 20:01:08
-<<<<<<< 86daa0a0e0fbe26402665ca13c8fe141bfb9eb09
-# @Last Modified by:   rajeshneti
-# @Last Modified time: 2018-04-08 14:37:21
-=======
-# @Last Modified by:   vamshi
-# @Last Modified time: 2018-04-09 22:30:04
->>>>>>> add google scapred links
 
 #code to extract nouns from a sentence
 
@@ -58,5 +51,21 @@ def extract_nouns(questions):
 		keywords.append(nouns)
 	return keywords
 
+def extract_nouns_for_ques(question):
 
+	is_noun = lambda pos: pos[:2] == 'NN'
+	# tokenize
+	stop_words = set(stopwords.words('english'))
+	keywords = []
+
+	#rm apostrophe
+	question = question.replace("‘", '').replace("’", '').replace("'", '')
+	tokenized = nltk.word_tokenize(question)
+
+	nouns = [word for (word, pos) in nltk.pos_tag(tokenized) if is_noun(pos)] 
+	nouns = [word.lower() for word in nouns]
+	nouns = [w for w in nouns if not w in stop_words]
+	keywords.append(nouns)
+	
+	return keywords
 

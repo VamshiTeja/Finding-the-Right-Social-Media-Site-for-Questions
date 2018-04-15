@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 # @Author: vamshi
-# @Date:   2018-04-10 08:40:39
+# @Date:   2018-04-09 21:53:34
 # @Last Modified by:   vamshi
-# @Last Modified time: 2018-04-10 13:56:45
+# @Last Modified time: 2018-04-14 14:39:04
+
 import urllib2
 from bs4 import BeautifulSoup
 import os,sys
@@ -11,16 +12,12 @@ import nltk
 from nltk import word_tokenize
 from nltk.stem.wordnet import WordNetLemmatizer 
 from nltk.stem.porter import PorterStemmer
-
-from bing_links import bing_links
+import pickle
 
 import re
 import string
-import ssl
 
-ctx = ssl.create_default_context()
-ctx.check_hostname = False
-ctx.verify_mode = ssl.CERT_NONE
+from links import bing_links,yahoo_links
 
 #vocabulary based on glove-wikipedia
 VOCAB_FILE = "../../data/vocab.npz"
@@ -29,10 +26,8 @@ sites = ["answers.com","ask.com","blogger.com", "facebook.com", "flickr.com" ,"g
 		"libre.fm","linkedin.com","match.com","pinterest.com","quora.com","raptr.com","reddit.com","stackoverflow.com" ,"tripadvisor.com","tumblr.com",
 		"twitter.com","viadeo.com","wikipedia.org","wordpress.org","xing.com","yelp.com","youtube.com"]
 
-
-
 #get google links for n=3
-
+google_links_n3 = np.load("../../data/links.npy")
 #print(google_links_n3)
 
 #load vocabulary
@@ -68,9 +63,6 @@ def get_text(url):
 		print ('We failed with error code - %s.' % e.code)
 		return None
 
-
-
-
 def get_words(text):
 	
 	text.replace("-|&|(|)|?"," ")
@@ -92,32 +84,37 @@ def get_words(text):
 	return words
 
 
-#text = get_text(google_links_n3[0][0])
-#print(get_words(text))
 
-#store dicts of all sites
-dicts = []
+def get_vectors_for_sites(links,search_engine="google"):
+	'''
+	links: links of the search engine
+	searrch_engine: "google" or "yahoo" or "bing"
+	'''
+	for (site_no,site_links) in enumerate(links):
+		print("processing site : %s "%sites[site_no])
+		site_words = []
+		vocab_site_dict = dict(zip(vocabulary,counts))
+		for link in site_links[0:5]:
+			print("------> processing link: %s"%link)
+			text = get_text(link)
 
-for (site_no,site_links) in enumerate(bing_links):
-	print("processing site : " ,sites[site_no])
-	site_words = []
-	vocab_site_dict = zip(vocabulary,counts)
-	for link in site_links[0:5]:
-		print("------> processing link: %s"%link)
-		text = get_text(link)
-		if(text is not None):
-			words = get_words(text)
+			if(text is not None):
+				words = get_words(text)
 
-			#increment counts of words in vocabulary based on words in sites
-			try:
-				for wrd in words:
-					vocab_site_dict[wrd] += 1
-			except:
-				print(wrd, "word not found in vocabulary")
+				#increment counts of words in vocabulary based on words in sites
+				try:
+					for wrd in words:
+						vocab_site_dict[wrd] += 1
+				except:
+					print(wrd, "word not found in vocabulary")
+					vocab_site_dict['unknown'] +=1
 
-		np.save("../../data/bing_text/"+os.path.splitext(sites[site_no])[0], vocab_site_dict)
-		site_words.append(words)
-		dicts.append(vocab_site_dict)
-	print("\n")
+		with open("../../data/"+search_engine+"_text/"+os.path.splitext(sites[site_no])[0]+".pickle","wb") as f:
+			pickle.dump(vocab_site_dict, f)
+			f.close()
 
-#np.save("./site_bing_dicts",dicts)
+		print("\n")
+
+get_vectors_for_sites(google_links_n3,"google")
+#get_vectors_for_sites(bing_links,"bing")
+get_vectors_for_sites(yahoo_links,"yahoo")

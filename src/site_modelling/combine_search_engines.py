@@ -2,7 +2,7 @@
 # @Author: vamshi
 # @Date:   2018-04-10 09:48:14
 # @Last Modified by:   vamshi
-# @Last Modified time: 2018-04-10 22:40:40
+# @Last Modified time: 2018-04-14 15:07:27
 
 import numpy as np 
 import os,sys
@@ -51,6 +51,4 @@ def min_max_mean_evidence():
 			pickle.dump(mean_representation, f)
 			f.close()
 		
-
-
 min_max_mean_evidence()
