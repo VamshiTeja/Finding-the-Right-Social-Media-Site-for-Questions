@@ -2,7 +2,7 @@
 # @Author: vamshi
 # @Date:   2018-04-10 09:48:41
 # @Last Modified by:   vamshi
-# @Last Modified time: 2018-04-17 00:41:41
+# @Last Modified time: 2018-04-17 00:46:06
 import os 
 import sys
 from sklearn.metrics.pairwise import cosine_similarity
@@ -35,7 +35,7 @@ sites=["answers.com","ask.com","blogger.com", "facebook.com", "flickr.com" ,"gir
 		"twitter.com","viadeo.com","wikipedia.org","wordpress.org","xing.com","yelp.com","youtube.com"]
 print(len(sites))
 
-def similarity(question):
+def similarity(question,evidence):
 	ques_vec = wiki_api.question_repr(question,10).values()
 	if(np.sum(ques_vec)!=0):
 		#print(np.sum(ques_vec))
@@ -63,7 +63,7 @@ def similarity(question):
 
 	ind = np.argpartition(cos_sim, -5)[-5:]
 	index = ind[np.flip(np.argsort(cos_sim[ind]),0)]
-	print(cos_sim[index])
+	#print(cos_sim[index])
 	print("site recommended for question:  %s is %s"%(question,sites[index[0]]))
 	return index
 
