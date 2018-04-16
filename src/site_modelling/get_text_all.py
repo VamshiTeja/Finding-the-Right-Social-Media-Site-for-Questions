@@ -2,7 +2,7 @@
 # @Author: vamshi
 # @Date:   2018-04-09 21:53:34
 # @Last Modified by:   vamshi
-# @Last Modified time: 2018-04-14 14:39:04
+# @Last Modified time: 2018-04-16 23:41:51
 
 import urllib2
 from bs4 import BeautifulSoup
@@ -16,8 +16,10 @@ import pickle
 
 import re
 import string
+import ssl
+from links import yahoo_links, bing_links
 
-from links import bing_links,yahoo_links
+ssl._create_default_https_context = ssl._create_unverified_context
 
 #vocabulary based on glove-wikipedia
 VOCAB_FILE = "../../data/vocab.npz"
@@ -90,11 +92,12 @@ def get_vectors_for_sites(links,search_engine="google"):
 	links: links of the search engine
 	searrch_engine: "google" or "yahoo" or "bing"
 	'''
+	print(search_engine)
 	for (site_no,site_links) in enumerate(links):
 		print("processing site : %s "%sites[site_no])
 		site_words = []
 		vocab_site_dict = dict(zip(vocabulary,counts))
-		for link in site_links[0:5]:
+		for link in site_links[0:10]:
 			print("------> processing link: %s"%link)
 			text = get_text(link)
 
@@ -115,6 +118,6 @@ def get_vectors_for_sites(links,search_engine="google"):
 
 		print("\n")
 
-get_vectors_for_sites(google_links_n3,"google")
+#get_vectors_for_sites(google_links_n3,"google")
 #get_vectors_for_sites(bing_links,"bing")
 get_vectors_for_sites(yahoo_links,"yahoo")

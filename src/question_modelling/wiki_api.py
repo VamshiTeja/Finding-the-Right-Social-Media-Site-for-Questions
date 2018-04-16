@@ -2,16 +2,20 @@
 # @Author: vamshi
 # @Date:   2018-03-04 20:33:21
 # @Last Modified by:   vamshi
-# @Last Modified time: 2018-04-14 15:17:54
+# @Last Modified time: 2018-04-16 01:06:11
 
 import os
 import sys
 import string
 import nltk
 from nltk.corpus import stopwords
+import re
 import pandas 
 import numpy as np
 import wikipedia as wiki
+from nltk import word_tokenize
+from nltk.stem.wordnet import WordNetLemmatizer 
+from nltk.stem.porter import PorterStemmer
 from extract_nouns import extract_nouns_for_ques,extract_nouns
 
 VOCAB_FILE = "../../data/vocab.npz"
@@ -96,29 +100,50 @@ for (ques_no,ques_keywds) in enumerate(ques_nouns):
 
 '''
 
-def question_repr(question):
+def get_words(text):
+	
+	text.replace("-|&|(|)|?"," ")
+	text = re.sub("[^A-Za-z]+"," ",text)
+	#text = re.sub('\W+','',text)
+
+	#print(text)
+	words = word_tokenize(text)
+	#words = re.split(r'\W+', text)
+	words = [word.lower() for word in words]
+
+	#stemming and lemmatization
+	lem = WordNetLemmatizer()
+	#stem = PorterStemmer()
+
+	words = [lem.lemmatize(word,"v") for word in words]
+	#words = [stem.stem(word) for word in words]
+
+	return words
+
+def question_repr(question,num_pages):
 	ques_nouns = extract_nouns_for_ques(question)
 	vocab_dict = dict(zip(vocabulary,counts))
 	for keywd in ques_nouns:
 		word_count = 0
 		total_count = 0
-		print ("Searching for : ", keywd)
+		#print ("Searching for : ", keywd)
 
-		search_results =  wiki.search(keywd,results=1)
-		print("search results are: ", search_results)
+		search_results =  wiki.search(keywd,results=num_pages)
+		#print("search results are: ", search_results)
 		for wrd in search_results:
 			try:
 				page = wiki.page(wrd)
 				content = page.content
 				#content = content.decode("utf-8",'ignore')
 				#content = content.replace("‘", '').replace("’", '').replace("'", '')
-				tokenized_page = nltk.word_tokenize(content)
+				tokenized_words = get_words(content)
+
 				try:
-					for wrd in tokenized_page:
+					for wrd in tokenized_words:
 						vocab_dict[wrd] += 1
 				except:
 					vocab_dict['unknown'] += 1
-					print(wrd, "word not found in vocabulary")
+					#print(wrd, "word not found in vocabulary")
 
 			except wiki.exceptions.DisambiguationError as e:
 				'''
@@ -136,3 +161,4 @@ def question_repr(question):
 	return vocab_dict
 
 #a = question_repr(questions[0])
+#print(np.sum(a.values()))
