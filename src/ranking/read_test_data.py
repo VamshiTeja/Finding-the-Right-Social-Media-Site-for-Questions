@@ -2,7 +2,7 @@
 # @Author: vamshi
 # @Date:   2018-04-16 00:29:25
 # @Last Modified by:   vamshi
-# @Last Modified time: 2018-04-17 00:52:55
+# @Last Modified time: 2018-04-17 00:53:41
 
 import os,sys
 import pandas as pd
@@ -33,7 +33,7 @@ for s in gt[1:]:
 
 pred = []
 for question in questions:
-	index = similarity(question.encode('ascii','ignore'))
+	index = similarity(question.encode('ascii','ignore'),evidence)
 	pred.append(index)
 
 with open("pred_"+evidence+".pickle","wb") as f:
